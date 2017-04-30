@@ -4,6 +4,7 @@
   "description": "Visualises real-time data from the Twitter Streaming API Edit",
   "main": "server.js",
   "scripts": {
+    "start:dev": "DEBUG=* nodemon server.js",
     "test": "xo"
   },
   "repository": {
@@ -21,5 +22,15 @@
   "bugs": {
     "url": "https://github.com/nickrttn/twitter-dataviz/issues"
   },
-  "homepage": "https://github.com/nickrttn/twitter-dataviz#readme"
+  "homepage": "https://github.com/nickrttn/twitter-dataviz#readme",
+  "dependencies": {
+    "debug": "^2.6.6",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.6",
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "xo": "^0.18.1"
+  }
 }
