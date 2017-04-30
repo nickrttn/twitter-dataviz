@@ -30,6 +30,7 @@
     "express": "^4.15.2"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "xo": "^0.18.1"
   }
 }
