@@ -9,6 +9,7 @@ const app = express();
 
 app.set('x-powered-by', false);
 app.set('port', process.env.PORT);
+app.set('view engine', 'ejs')
 
 app.get('/', onindex);
 
