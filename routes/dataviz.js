@@ -25,10 +25,18 @@ function stream(session) {
 	const stream = client.stream('statuses/sample');
 
 	stream.on('data', evt => {
-		debug(evt && evt.text);
+		// debug(evt && evt.coordinates);
+		// debug(evt && evt.favorite_count > 0);
+		debug(evt && evt.place && evt.place.bounding_box);
 	});
 
 	stream.on('error', err => {
 		debug(err);
 	});
 }
+
+// tweet length
+// emoji's
+// location (map)
+// hashtags
+//
