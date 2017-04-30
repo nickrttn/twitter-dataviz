@@ -13,6 +13,7 @@ function onsignin(req, res) {
 	requestToken((err, postRes) => {
 		if (err) {
 			debug(err);
+			req.session.error = err;
 			return res.redirect('/');
 		}
 
@@ -36,6 +37,7 @@ function oncallback(req, res) {
 		accessToken(req.query, (err, postRes) => {
 			if (err) {
 				debug(err);
+				req.session.error = err;
 				return res.redirect('/');
 			}
 
