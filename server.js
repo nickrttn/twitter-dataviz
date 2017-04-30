@@ -1,3 +1,4 @@
+const path = require('path');
 const http = require('http').Server;
 const express = require('express');
 const socketio = require('socket.io');
@@ -32,12 +33,15 @@ app.use(session({
 	cookie: {}
 }));
 
+// Static files
+app.use('/assets', express.static(path.join(__dirname, 'client/build')));
+
 // Routes
 app.get('/', onindex);
-app.get('/dataviz', ondataviz);
+app.get('/dataviz', ondataviz(io));
 
 // Routers
-app.use('/auth', onauth(io));
+app.use('/auth', onauth);
 
 server.listen(app.get('port'), err => {
 	if (err) {
