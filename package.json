@@ -1,0 +1,25 @@
+{
+  "name": "twitter-dataviz",
+  "version": "1.0.0",
+  "description": "Visualises real-time data from the Twitter Streaming API Edit",
+  "main": "server.js",
+  "scripts": {
+    "test": "xo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickrttn/twitter-dataviz.git"
+  },
+  "keywords": [
+    "datavisualisation",
+    "node",
+    "javascript",
+    "twitter"
+  ],
+  "author": "Nick Rutten <hello@nickrttn.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nickrttn/twitter-dataviz/issues"
+  },
+  "homepage": "https://github.com/nickrttn/twitter-dataviz#readme"
+}
