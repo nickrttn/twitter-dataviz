@@ -11,7 +11,11 @@ router.get('/twitter/callback', oncallback);
 
 function onsignin(req, res) {
 	requestToken((err, postRes) => {
-		if (err) debug(err); // eslint-disable-line curly
+		if (err) {
+			debug(err);
+			return res.redirect('/');
+		}
+
 		if (postRes.status === 200) {
 			const reqToken = qs.parse(postRes.text);
 			if (reqToken.oauth_callback_confirmed === 'true') {
@@ -30,6 +34,11 @@ function onsignin(req, res) {
 function oncallback(req, res) {
 	if (req.query.oauth_token === req.session.requestToken) {
 		accessToken(req.query, (err, postRes) => {
+			if (err) {
+				debug(err);
+				return res.redirect('/');
+			}
+
 			const oauthToken = qs.parse(postRes.text);
 
 			req.session.oauthToken = oauthToken.oauth_token;
