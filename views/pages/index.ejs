@@ -1,5 +1,9 @@
 <%- include('../application/head.ejs') %>
 
+	<% if (error) { %>
+		<p class="error"><%= error %></p>
+	<% } %>
+
 	<a href="/auth/twitter/signin">Sign in with Twitter</a>
 
 <%- include('../application/foot.ejs') %>
