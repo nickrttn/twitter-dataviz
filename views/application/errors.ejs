@@ -1,0 +1,5 @@
+<% if (errors) { %>
+		<% errors.forEach(err => { %>
+			<p class="error"><%= err.message %></p>
+		<% }) %>
+	<% } %>
