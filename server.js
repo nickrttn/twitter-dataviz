@@ -1,5 +1,7 @@
-const debug = require('debug')('server');
+const http = require('http').Server;
 const express = require('express');
+const socketio = require('socket.io');
+const debug = require('debug')('server');
 const redis = require('redis');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
@@ -11,6 +13,8 @@ const onauth = require('./routes/auth');
 require('dotenv').config();
 
 const app = express();
+const server = http(app);
+const io = socketio(server);
 
 // ExpressJS config
 app.set('x-powered-by', false);
@@ -33,9 +37,9 @@ app.get('/', onindex);
 app.get('/dataviz', ondataviz);
 
 // Routers
-app.use('/auth', onauth);
+app.use('/auth', onauth(io));
 
-app.listen(app.get('port'), err => {
+server.listen(app.get('port'), err => {
 	if (err) {
 		debug(err);
 	}

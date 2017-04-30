@@ -37,6 +37,6 @@ function stream(session) {
 
 // tweet length
 // emoji's
-// location (map)
-// hashtags
-//
+// location & places (map)
+// hashtags (aantal)
+// profile link color
