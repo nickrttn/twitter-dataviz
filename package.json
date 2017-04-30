@@ -4,7 +4,7 @@
   "description": "Visualises real-time data from the Twitter Streaming API Edit",
   "main": "server.js",
   "scripts": {
-    "start:dev": "DEBUG=datavis,auth nodemon server.js",
+    "start:dev": "DEBUG=server,dataviz,auth nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo"
   },
@@ -31,8 +31,11 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "oboe": "^2.1.3",
     "redis": "^2.7.1",
-    "superagent": "^3.5.2"
+    "request": "^2.81.0",
+    "superagent": "^3.5.2",
+    "twitter": "^1.7.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0",

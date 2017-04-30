@@ -1,10 +1,11 @@
-const debug = require('debug')('datavis');
+const debug = require('debug')('server');
 const express = require('express');
 const redis = require('redis');
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
 const onindex = require('./routes/index');
+const ondataviz = require('./routes/dataviz');
 const onauth = require('./routes/auth');
 
 require('dotenv').config();
@@ -29,6 +30,7 @@ app.use(session({
 
 // Routes
 app.get('/', onindex);
+app.get('/dataviz', ondataviz);
 
 // Routers
 app.use('/auth', onauth);
