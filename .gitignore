@@ -45,6 +45,7 @@ Thumbs.db
 
 # Deployment config
 ecosystem.config.js
+ecosystem.json
 
 # Build files
 client/build/*
