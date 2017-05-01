@@ -6,7 +6,7 @@ const io = require('socket.io-client');
 	const section = document.querySelector('.colors');
 
 	socket.on('colors', clrs => {
-		clrs.forEach(add);
+		add(clrs.reduce((acc, clr) => acc + clr, ''));
 	});
 
 	function add(el) {
