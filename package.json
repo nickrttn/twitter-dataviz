@@ -8,7 +8,9 @@
     "start:dev": "DEBUG=server,dataviz,auth nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
-    "watch:js": "watchify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "watch": "concurrently \"npm run colors\" \"npm run map\"",
+    "colors": "watchify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
+    "map": "watchify client/src/map.js -t babelify -g uglifyify -o client/build/map.js",
     "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
     "deploy": "pm2 deploy production"
   },
@@ -30,6 +32,10 @@
   "homepage": "https://github.com/nickrttn/twitter-dataviz#readme",
   "dependencies": {
     "connect-redis": "^3.2.0",
+    "d3-geo": "^1.6.3",
+    "d3-request": "^1.0.5",
+    "d3-selection": "^1.0.5",
+    "d3-time": "^1.0.6",
     "debug": "^2.6.6",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
@@ -39,6 +45,7 @@
     "socket.io": "^1.7.3",
     "socket.io-client": "^1.7.3",
     "superagent": "^3.5.2",
+    "topojson-client": "^3.0.0",
     "twitter": "^1.7.0",
     "virtual-dom": "^2.1.1"
   },
@@ -46,6 +53,7 @@
     "babel-preset-env": "^1.4.0",
     "babelify": "^7.3.0",
     "browserify": "^14.3.0",
+    "concurrently": "^3.4.0",
     "nodemon": "^1.11.0",
     "uglifyify": "^3.0.4",
     "watchify": "^3.9.0",

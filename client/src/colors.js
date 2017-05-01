@@ -2,7 +2,7 @@ const io = require('socket.io-client');
 
 (function () {
 	'use strict';
-	const socket = io();
+	const socket = io('/colors');
 	const section = document.querySelector('.colors');
 
 	socket.on('colors', clrs => {
