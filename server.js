@@ -22,10 +22,14 @@ app.set('x-powered-by', false);
 app.set('port', process.env.TV_PORT);
 app.set('view engine', 'ejs');
 
+const redisClient = process.env.TV_REDIS_PASSWORD
+	?	redis.createClient({password: process.env.TV_REDIS_PASSWORD})
+	: redis.createClient();
+
 // Sessions
 app.use(session({
 	store: new RedisStore({
-		client: redis.createClient()
+		client: redisClient
 	}),
 	secret: process.env.TV_SESSION_SECRET,
 	resave: false,
