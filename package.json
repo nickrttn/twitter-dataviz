@@ -1,7 +1,7 @@
 {
   "name": "twitter-dataviz",
   "version": "1.0.0",
-  "description": "Visualises real-time data from the Twitter Streaming API Edit",
+  "description": "Visualises real-time data from the Twitter Streaming API",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
