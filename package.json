@@ -4,6 +4,7 @@
   "description": "Visualises real-time data from the Twitter Streaming API Edit",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "start:dev": "DEBUG=server,dataviz,auth nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
