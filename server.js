@@ -27,7 +27,7 @@ app.use(session({
 	store: new RedisStore({
 		client: redis.createClient()
 	}),
-	secret: process.env.SESSION_SECRET,
+	secret: process.env.TV_SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false,
 	cookie: {}
