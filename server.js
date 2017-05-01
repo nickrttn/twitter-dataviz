@@ -42,10 +42,10 @@ app.use('/assets', express.static(path.join(__dirname, 'client/build')));
 
 // Routes
 app.get('/', onindex);
-app.get('/dataviz', ondataviz(io));
 
 // Routers
 app.use('/auth', onauth);
+app.use('/dataviz', ondataviz(io));
 
 server.listen(app.get('port'), err => {
 	if (err) {
@@ -54,3 +54,5 @@ server.listen(app.get('port'), err => {
 
 	debug(`⌗ Twitter dataviz running: http://localhost:${app.get('port')}`);
 });
+
+module.exports = server;
