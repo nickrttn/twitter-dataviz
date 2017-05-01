@@ -8,7 +8,8 @@
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
     "watch:js": "watchify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
-    "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js"
+    "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "deploy": "pm2 deploy production"
   },
   "repository": {
     "type": "git",
