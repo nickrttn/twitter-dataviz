@@ -7,7 +7,8 @@
     "start:dev": "DEBUG=server,dataviz,auth nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
-    "watch:js": "watchify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js"
+    "watch:js": "watchify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "babel-preset-env": "^1.4.0",
     "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
     "nodemon": "^1.11.0",
     "uglifyify": "^3.0.4",
     "watchify": "^3.9.0",

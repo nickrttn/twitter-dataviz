@@ -42,3 +42,9 @@ jspm_packages
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Deployment config
+ecosystem.config.js
+
+# Build folder
+client/build

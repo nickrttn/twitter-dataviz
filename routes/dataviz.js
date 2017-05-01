@@ -28,23 +28,16 @@ module.exports = io => {
 			let colors = [];
 
 			stream.on('data', evt => {
-				if (colors.length < 20) {
-					colors.push(evt.user.profile_link_color);
-					return;
-				}
+				colors.push(`<div style="background-color:#${evt.user.profile_link_color}"></div>`);
+			});
 
+			setTimeout(send, 0);
+
+			function send() {
 				io.emit('colors', colors);
 				colors = [];
-
-				// io.emit('color', evt.user.profile_link_color);
-				// if (evt.place) {
-				// 	socket.emit('place', evt.place);
-				// }
-
-				// if (evt.coordinates) {
-				// 	socket.emit('location', evt.coordinates);
-				// }
-			});
+				setTimeout(send, 50);
+			}
 
 			stream.on('error', err => {
 				debug(err);
@@ -55,6 +48,10 @@ module.exports = io => {
 
 // tweet length
 // emoji's
-// location & places (map)
+// location & places (map) (hoe vaak mentioned een land zichzelf) (day/nighttime)
+// -- numbers followers RADIUS
+// http://bl.ocks.org/mbostock/4597134 SUNLIGHT
+//
+// --
 // hashtags (aantal)
 // profile link color
