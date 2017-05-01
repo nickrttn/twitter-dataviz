@@ -24,7 +24,7 @@
 			// Path of the application on target servers
 			"path" : "/var/www/production",
 			// Commands to be executed on the server after the repo has been cloned
-			"post-deploy" : "npm install && npm run build && pm2 startOrRestart ecosystem.json --env production",
+			"post-deploy" : "npm install && npm run build-colors && npm run build-map && pm2 startOrRestart ecosystem.json --env production",
 			// Environment variables that must be injected in all applications on this env
 			"env": {
 				"NODE_ENV": "production"

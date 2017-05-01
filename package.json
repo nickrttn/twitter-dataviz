@@ -11,7 +11,8 @@
     "watch": "concurrently \"npm run colors\" \"npm run map\"",
     "colors": "watchify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
     "map": "watchify client/src/map.js -t babelify -g uglifyify -o client/build/map.js",
-    "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "build-colors": "browserify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
+    "build-map": "browserify client/src/map.js -t babelify -g uglifyify -o client/build/map.js",
     "deploy": "pm2 deploy production"
   },
   "repository": {
