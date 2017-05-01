@@ -36,7 +36,7 @@ module.exports = io => {
 			function send() {
 				io.emit('colors', colors);
 				colors = [];
-				setTimeout(send, 50);
+				setTimeout(send, 100);
 			}
 
 			stream.on('error', err => {
