@@ -1,12 +1,16 @@
 {
   "name": "twitter-dataviz",
   "version": "1.0.0",
-  "description": "Visualises real-time data from the Twitter Streaming API Edit",
+  "description": "Visualises real-time data from the Twitter Streaming API",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "start:dev": "DEBUG=server,dataviz,auth nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
-    "test": "xo"
+    "test": "xo",
+    "watch:js": "watchify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "build": "browserify client/src/browser.js -t babelify -g uglifyify -o client/build/browser.js",
+    "deploy": "pm2 deploy production"
   },
   "repository": {
     "type": "git",
@@ -31,14 +35,20 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
-    "oboe": "^2.1.3",
     "redis": "^2.7.1",
-    "request": "^2.81.0",
+    "socket.io": "^1.7.3",
+    "socket.io-client": "^1.7.3",
     "superagent": "^3.5.2",
-    "twitter": "^1.7.0"
+    "twitter": "^1.7.0",
+    "virtual-dom": "^2.1.1"
   },
   "devDependencies": {
+    "babel-preset-env": "^1.4.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.3.0",
     "nodemon": "^1.11.0",
+    "uglifyify": "^3.0.4",
+    "watchify": "^3.9.0",
     "xo": "^0.18.1"
   }
 }

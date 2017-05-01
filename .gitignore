@@ -42,3 +42,6 @@ jspm_packages
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Build files
+client/build/*
