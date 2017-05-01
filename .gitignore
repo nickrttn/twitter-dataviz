@@ -43,9 +43,5 @@ jspm_packages
 .DS_Store
 Thumbs.db
 
-# Deployment config
-ecosystem.config.js
-ecosystem.json
-
 # Build files
 client/build/*

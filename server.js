@@ -19,7 +19,7 @@ const io = socketio(server);
 
 // ExpressJS config
 app.set('x-powered-by', false);
-app.set('port', process.env.PORT);
+app.set('port', process.env.TV_PORT);
 app.set('view engine', 'ejs');
 
 // Sessions

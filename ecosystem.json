@@ -1,0 +1,34 @@
+{
+	// Applications part
+	"apps" : [
+		{
+		"name": "twitterviz",
+		"script": "server.js",
+		// Environment variables injected when starting with --env production
+		// http://pm2.keymetrics.io/docs/usage/application-declaration/#switching-to-different-environments
+		"env_production" : {
+			"NODE_ENV": "production"
+		}
+	}],
+	// Deployment part
+	// Here you describe each environment
+	"deploy" : {
+		"production" : {
+			"user" : "nick",
+			// Multi host is possible, just by passing IPs/hostname as an array
+			"host" : "188.226.149.209",
+			// Branch
+			"ref"  : "origin/master",
+			// Git repository to clone
+			"repo" : "git@github.com:nickrttn/twitter-dataviz.git",
+			// Path of the application on target servers
+			"path" : "/var/www/production",
+			// Commands to be executed on the server after the repo has been cloned
+			"post-deploy" : "npm install && pm2 reload ecosystem.json --env production",
+			// Environment variables that must be injected in all applications on this env
+			"env": {
+				"NODE_ENV": "production"
+			}
+		}
+	}
+}

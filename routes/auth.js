@@ -61,7 +61,7 @@ function requestToken(callback) {
 		.post('https://api.twitter.com/oauth/request_token')
 		.set({Accept: '*/*'})
 		.set(auth.headers('POST', 'https://api.twitter.com/oauth/request_token', {
-			oauth_callback: process.env.TWITTER_OAUTHCALLBACK // eslint-disable-line camelcase
+			oauth_callback: process.env.TV_TWITTER_OAUTHCALLBACK // eslint-disable-line camelcase
 		}))
 		.end(callback);
 }
