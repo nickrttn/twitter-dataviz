@@ -6,6 +6,7 @@ module.exports = (req, res) => {
 			debug(err);
 		}
 
+		// Reset application errors
 		req.session.errors = null;
 
 		res.send(html);

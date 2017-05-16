@@ -20,7 +20,7 @@ module.exports = io => {
 
 	io.on('connection', socket => {
 		socket.on('disconnect', () => {
-			if (io.engine.clientsCount === 0) {
+			if (stream && io.engine.clientsCount === 0) {
 				stream.destroy();
 				stream.on('end', () => {
 					stream = undefined;
@@ -108,13 +108,19 @@ module.exports = io => {
 			// Attach an event listener to the emitter
 			stream.on('data', ontweet);
 
+			let count = 0;
+
 			function ontweet(tweet) {
 				if (tweet.coordinates) {
 					socket.emit('location', tweet.coordinates);
+					count++;
+					debug(count);
 				}
 
 				if (tweet.place) {
 					socket.emit('place', tweet.place);
+					count++;
+					debug(count);
 				}
 			}
 		});

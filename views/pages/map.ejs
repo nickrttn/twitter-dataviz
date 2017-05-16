@@ -1,7 +1,13 @@
 <%- include('../application/head.ejs') %>
 <%- include('../application/errors.ejs') %>
 
-	<section class="map"></section>
+	<main class="map-container">
+		<section class="explanation">
+			<h1>Tweets with locations and places</h1>
+			<p>A tweet with a users' location shows up as a small yellow dot. A tweet mentioning a place shows up as a bigger magenta dot.</p>
+		</section>
+		<section class="map"></section>
+	</main>
 
 <script src="/assets/map.js"></script>
 <%- include('../application/foot.ejs') %>

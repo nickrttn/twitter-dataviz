@@ -8,23 +8,23 @@ const select = require('d3-selection').select;
 const request = require('d3-request').json;
 const feature = require('topojson-client').feature;
 
-(function() {
+(function () {
 	'use strict';
 
 	const socket = io('/map');
 
-	const { width, height } = document.querySelector('.map').getBoundingClientRect();
+	const {width, height} = document.querySelector('.map').getBoundingClientRect();
 
 	// Nighttime map
 	// Source: http://bl.ocks.org/mbostock/4597134
 	const π = Math.PI;
-  const radians = π / 180;
-  const degrees = 180 / π;
+	const radians = π / 180;
+	const degrees = 180 / π;
 
 	const projection = geoMercator()
 		.translate([width / 2, height / 2])
 		.scale(153 / 960 * width)
-		.precision(.1);
+		.precision(0.1);
 
 	const path = geoPath()
 		.projection(projection)
@@ -40,8 +40,8 @@ const feature = require('topojson-client').feature;
 		.attr('width', width)
 		.attr('height', height);
 
-	request("https://unpkg.com/world-atlas@1/world/110m.json", (err, world) => {
-		if (err) throw err;
+	request('https://unpkg.com/world-atlas@1/world/110m.json', (err, world) => {
+		if (err) throw err; // eslint-disable-line curly
 
 		svg.append('path')
 			.datum(feature(world, world.objects.land))
@@ -71,9 +71,31 @@ const feature = require('topojson-client').feature;
 		if (loc.place_type === 'city') {
 			svg.append('path')
 				.datum(place(geoCentroid(loc.bounding_box)))
+				.style('fill-opacity', '1')
+				.style('stroke-opacity', '1')
 				.attr('class', 'place')
 				.attr('d', path);
 		}
+
+		const places = document.querySelectorAll('.place');
+		for (let i = places.length - 1; i >= 0; i--) {
+			places[i].style.fillOpacity -= 0.01;
+			places[i].style.strokeOpacity -= 0.01;
+
+			if (places[i].style.fillOpacity === 0) {
+				console.log('0 opacity');
+				places[i].remove();
+			}
+		}
+
+		document.querySelectorAll('.place').forEach(place => {
+			place.style.fillOpacity -= 0.01;
+			place.style.strokeOpacity -= 0.01;
+
+			if (place.style.fillOpacity === 0) {
+				place.remove();
+			}
+		});
 	});
 
 	function antipode(position) {
