@@ -1,19 +1,32 @@
 const debug = require('debug')('dataviz');
 const express = require('express');
 
-const emitter = require('../lib/stream');
-let stream;
-
 const router = new express.Router();
+
+const emitter = require('../lib/stream');
 
 // Closure used for passing io to a router
 module.exports = io => {
+	let stream;
+
 	router.use((req, res, next) => {
+		// Start the Twitter stream before routing
 		if (!stream) {
 			stream = emitter(req.session);
 		}
 
 		next();
+	});
+
+	io.on('connection', socket => {
+		socket.on('disconnect', () => {
+			if (io.engine.clientsCount === 0) {
+				stream.destroy();
+				stream.on('end', () => {
+					stream = undefined;
+				});
+			}
+		});
 	});
 
 	router.get('/', onindex);
@@ -30,71 +43,82 @@ module.exports = io => {
 	}
 
 	function oncolors(req, res) {
+		// Reset possible errors
+		req.session.errors = null;
+
+		// Define the namespace
 		const namespace = io.of('/colors');
 
+		// Init the stream if there isn't any
+		if (!stream) {
+			stream = emitter(req.session);
+		}
+
+		// Send the user a page
 		res.render('pages/colors.ejs', {
 			errors: req.session.errors,
 			user: req.session.screenName
 		});
 
-		// Reset possible errors
-		req.session.errors = null;
+		namespace.on('connection', socket => {
+			// Init the stream if there isn't any
+			if (!stream) {
+				stream = emitter(req.session);
+			}
 
-		// Attach an event listener to the emitter
-		stream.on('data', ontweet);
+			// Attach an event listener to the emitter
+			stream.on('data', ontweet);
 
-		// Create an empty colors array
-		let colors = [];
+			// Create an empty colors array
+			let colors = [];
 
-		function ontweet(tweet) {
-			colors.push(`<div style="background-color:#${tweet.user.profile_link_color}"></div>`);
-		}
+			function ontweet(tweet) {
+				colors.push(`<div style="background-color:#${tweet.user.profile_link_color}"></div>`);
+			}
 
-		function send() {
-			namespace.emit('colors', colors);
-			colors = [];
-			setTimeout(send, 50);
-		}
+			function send() {
+				socket.emit('colors', colors);
+				colors = [];
+				setTimeout(send, 50);
+			}
 
-		send();
+			send();
+		});
 	}
 
 	function onmap(req, res) {
+		// Reset possible errors
+		req.session.errors = null;
+
+		// Define the namespace
 		const namespace = io.of('/map');
 
+		// Send the user a page
 		res.render('pages/map.ejs', {
 			errors: req.session.errors,
 			user: req.session.screenName
 		});
 
-		// Reset possible errors
-		req.session.errors = null;
-
-		// Attach an event listener to the emitter
-		stream.on('data', ontweet);
-
-		function ontweet(tweet) {
-			if (tweet.coordinates) {
-				namespace.emit('location', tweet.coordinates);
+		namespace.on('connection', socket => {
+			// Init the stream if there isn't any
+			if (!stream) {
+				stream = emitter(req.session);
 			}
 
-			if (tweet.place) {
-				namespace.emit('place', tweet.place);
-			}
-		}
+			// Attach an event listener to the emitter
+			stream.on('data', ontweet);
 
-		req.session.errors = null;
+			function ontweet(tweet) {
+				if (tweet.coordinates) {
+					socket.emit('location', tweet.coordinates);
+				}
+
+				if (tweet.place) {
+					socket.emit('place', tweet.place);
+				}
+			}
+		});
 	}
 
 	return router;
 };
-
-// tweet length
-// emoji's
-// location & places (map) (hoe vaak mentioned een land zichzelf) (day/nighttime)
-// -- numbers followers RADIUS
-// http://bl.ocks.org/mbostock/4597134 SUNLIGHT
-//
-// --
-// hashtags (aantal)
-// profile link color
