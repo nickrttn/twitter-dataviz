@@ -109,7 +109,6 @@ module.exports = io => {
 			stream.on('data', ontweet);
 
 			let count = 0;
-
 			function ontweet(tweet) {
 				if (tweet.coordinates) {
 					socket.emit('location', tweet.coordinates);
