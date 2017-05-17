@@ -1,6 +1,8 @@
 const debug = require('debug')('dataviz');
 const express = require('express');
 
+const user = require('../db/user');
+
 const router = new express.Router();
 
 const emitter = require('../lib/stream');
@@ -8,6 +10,19 @@ const emitter = require('../lib/stream');
 // Closure used for passing io to a router
 module.exports = io => {
 	let stream;
+
+	// First, store the users' data in CouchDB
+	router.use((req, res, next) => {
+		user.save(req).then(user => {
+			const {name, screen_name: screenName} = user.value;
+			req.session.name = name;
+			req.session.screenName = screenName;
+
+			debug(req.session);
+
+			next();
+		});
+	});
 
 	router.use((req, res, next) => {
 		// Start the Twitter stream before routing
