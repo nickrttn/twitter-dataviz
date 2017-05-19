@@ -1,5 +1,5 @@
 /* eslint camelcase: 0 */
-// const debug = require('debug')('user');
+const debug = require('debug')('user');
 const Twitter = require('twitter');
 
 const connect = require('./connect');
@@ -24,7 +24,7 @@ user.save = req => new Promise((resolve, reject) => {
 		}
 
 		connect.then(db => {
-			db.collection('user')
+			db.collection('users')
 				.findOneAndUpdate({_id: res.id}, {$set: res}, {upsert: true, returnOriginal: false})
 				.then(resolve).catch(reject);
 		});

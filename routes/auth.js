@@ -42,8 +42,6 @@ function oncallback(req, res) {
 
 			const oauthToken = qs.parse(postRes.text);
 
-			console.log(oauthToken);
-
 			req.session.oauthToken = oauthToken.oauth_token;
 			req.session.oauthTokenSecret = oauthToken.oauth_token_secret;
 			req.session.userId = oauthToken.user_id;

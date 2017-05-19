@@ -33,8 +33,13 @@ body {
 	color: var(--brwhite);
 }
 
+h1, h2, h3, p {
+	max-width: 35em;
+}
+
 h1 {
 	line-height: 1.1;
+	letter-spacing: 0.05em;
 }
 
 a {
@@ -55,21 +60,89 @@ a:active {
 	flex-flow: column nowrap;
 	justify-content: flex-end;
 	margin: 5vmin 5vmax;
-	max-width: 35em;
 	height: calc(100vh - (2 * 5vmin));
 	padding-bottom: 5vh;
 }
 
 .introduction h1 {
 	font-size: calc(3em + .5vw);
-	line-height: 1.2;
 	margin-bottom: .25em;
-	letter-spacing: 0.05em;
 }
 
 .introduction p {
 	font-size: calc(1.125em + .5vw);
 	line-height: 1.4;
+}
+
+.viz-picker {
+	max-width: 40em;
+	margin: 5vw auto;
+	padding: 0 2em;
+}
+
+.viz-picker h1 span {
+	font-size: 1rem;
+	font-weight: 400;
+	color: var(--yellow);
+	letter-spacing: 0;
+}
+
+.viz-picker > p {
+	margin-bottom: 1.5em;
+}
+
+.viz-picker ul {
+	list-style-type: none;
+	display: flex;
+	flex-flow: row wrap;
+	padding: 0;
+	margin: -1em;
+}
+
+.viz-picker li {
+	flex: 0 15em;
+	background-color: var(--brwhite);
+	margin: 1em;
+}
+
+.viz-picker a {
+	display: block;
+	padding: 1em 0;
+	color: var(--brblack);
+	text-decoration: none;
+}
+
+.viz-picker div {
+	padding: 0 1em;
+}
+
+.viz-picker h2 {
+	position: relative;
+	text-transform: uppercase;
+	font-size: 1.25em;
+	letter-spacing: .1em;
+	margin-top: 0;
+}
+
+.viz-picker h2:after {
+	content: '';
+	position: absolute;
+	bottom: -0.15em; left: 0;
+	height: 3px;
+	width: 1.5em;
+	background-color: var(--red);
+	opacity: 0;
+	transition: opacity 120ms ease-out;
+}
+
+.viz-picker a:hover h2:after,
+.viz-picker a:focus h2:after {
+	opacity: 1;
+}
+
+.viz-picker li p {
+	font-weight: 400;
+	margin-bottom: 0;
 }
 
 .colors {
@@ -101,15 +174,11 @@ a:active {
 
 .map {
 	flex: 0 80vw;
-	height: calc(80vw * 0.66);
-	margin: 0 auto;
+	padding: 2em 2em 2em 0;
 }
 
-.map svg {
-	max-height: 100vh;
-	height: auto;
-	width: auto;
-	background: var(--black);
+.map > div {
+	height: 50vw;
 }
 
 .land {
@@ -117,16 +186,15 @@ a:active {
 }
 
 .night {
-	fill: var(--black);
-	fill-opacity: .3;
-	stroke: var(--black);
+	fill: black;
+	fill-opacity: .15;
+	stroke: black;
 }
 
-.tweet {
+/*.location {
 	fill: var(--yellow);
 }
 
 .place {
 	fill: var(--magenta);
-	stroke: var(--magenta);
-}
+}*/

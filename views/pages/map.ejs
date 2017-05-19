@@ -4,11 +4,14 @@
 	<main class="map-container">
 		<section class="explanation">
 			<h1>Tweets with locations and places</h1>
-			<p>A tweet with a users' location shows up as a small yellow dot.</p> 
+			<p>A tweet with a users' location shows up as a small yellow dot.</p>
 			<p>A tweet mentioning a place shows up as a bigger magenta dot.</p>
 			<p>Tweets decay over time and will disappear after a while.</p>
 		</section>
-		<section class="map"></section>
+		<section class="map">
+			<input type="range" name="time" min="<%= (Date.now() - 8.64e+7) %>" max="<%= Date.now() %>" value=<%= Date.now() %>" step="900000">
+			<div></div>
+		</section>
 	</main>
 
 <script src="/assets/map.js"></script>

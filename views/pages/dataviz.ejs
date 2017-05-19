@@ -1,9 +1,27 @@
 <%- include('../application/head.ejs') %>
 <%- include('../application/errors.ejs') %>
 
-	<ul>
-		<li><a href="/dataviz/colors">Colors</a></li>
-		<li><a href="/dataviz/map">Map</a></li>
-	</ul>
+	<section class="viz-picker">
+		<h1>Hi, <%= name %> <span>@<%= user %></span></h1>
+		<p>Pick the visualisation you'd like to see.</p>
+		<ul>
+			<li>
+				<a href="/dataviz/colors">
+					<div>
+						<h2>Colors</h2>
+						<p>More art than visualisation, it shows the profile colors of Twitter users tweeting in real-time.</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="/dataviz/map">
+					<div>
+						<h2>Map</h2>
+						<p>An interactive map, showing tweet locations and places mentioned all over the world in real-time.</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</section>
 
 <%- include('../application/foot.ejs') %>

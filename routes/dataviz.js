@@ -1,37 +1,17 @@
 const debug = require('debug')('dataviz');
 const express = require('express');
+const retext = require('retext');
+const sentiment = require('retext-sentiment');
+const scale = require('d3-scale').scaleLinear;
 
+const emitter = require('../lib/stream');
 const user = require('../db/user');
 
 const router = new express.Router();
 
-const emitter = require('../lib/stream');
-
 // Closure used for passing io to a router
 module.exports = io => {
 	let stream;
-
-	// First, store the users' data in CouchDB
-	router.use((req, res, next) => {
-		user.save(req).then(user => {
-			const {name, screen_name: screenName} = user.value;
-			req.session.name = name;
-			req.session.screenName = screenName;
-
-			debug(req.session);
-
-			next();
-		});
-	});
-
-	router.use((req, res, next) => {
-		// Start the Twitter stream before routing
-		if (!stream) {
-			stream = emitter(req.session);
-		}
-
-		next();
-	});
 
 	io.on('connection', socket => {
 		socket.on('disconnect', () => {
@@ -44,6 +24,17 @@ module.exports = io => {
 		});
 	});
 
+	// First, store the users' data
+	router.get('/', (req, res, next) => {
+		user.save(req).then(user => {
+			const {name, screen_name: screenName} = user.value;
+			req.session.name = name;
+			req.session.screenName = screenName;
+
+			next();
+		});
+	});
+
 	router.get('/', onindex);
 	router.get('/colors', oncolors);
 	router.get('/map', onmap);
@@ -51,7 +42,8 @@ module.exports = io => {
 	function onindex(req, res) {
 		res.render('pages/dataviz.ejs', {
 			errors: req.session.errors,
-			user: req.session.screenName
+			user: req.session.screenName,
+			name: req.session.name
 		});
 
 		req.session.errors = null;
@@ -120,21 +112,36 @@ module.exports = io => {
 				stream = emitter(req.session);
 			}
 
+			const processor = retext().use(sentiment);
+
+			function tweetMood(tweet) {
+				return processor.run(processor.parse(tweet));
+			}
+
 			// Attach an event listener to the emitter
 			stream.on('data', ontweet);
 
-			let count = 0;
 			function ontweet(tweet) {
+				if (tweet.coordinates && tweet.places) {
+					debug('both', tweet.coordinates, tweet.places);
+				}
+
 				if (tweet.coordinates) {
-					socket.emit('location', tweet.coordinates);
-					count++;
-					debug(count);
+					debug('user', tweet.coordinates);
+					tweetMood(tweet.text).then(mood => {
+						socket.emit('place', Object.assign({
+							sentiment: mood.data
+						}, tweet.coordinates));
+					});
 				}
 
 				if (tweet.place) {
-					socket.emit('place', tweet.place);
-					count++;
-					debug(count);
+					debug('place', tweet.place);
+					tweetMood(tweet.text).then(mood => {
+						socket.emit('place', Object.assign({
+							sentiment: mood.data
+						}, tweet.place));
+					});
 				}
 			}
 		});
