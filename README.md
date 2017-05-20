@@ -9,7 +9,6 @@ This application visualizes tweets as they come in. If a tweet includes a locati
 - Socket.io WebSockets or long polling, depending on the capabilities of the client
 - Data visualization using D3.js geo libraries
 - Error handling
--
 
 ## API documentation
 
@@ -28,3 +27,8 @@ The web application exposes five endpoints.
 
 - World map data from [Natural Earth Data](www.naturalearthdata.com)
 - an orthographic map projection
+- http://samherbert.net/svg-loaders/
+- d3-geo
+- leaflet
+- socket-io
+- leaflet.terminator

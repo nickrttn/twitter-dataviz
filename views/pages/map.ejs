@@ -4,12 +4,17 @@
 	<main class="map-container">
 		<section class="explanation">
 			<h1>Tweets with locations and places</h1>
-			<p>A tweet with a users' location shows up as a small yellow dot.</p>
-			<p>A tweet mentioning a place shows up as a bigger magenta dot.</p>
-			<p>Tweets decay over time and will disappear after a while.</p>
+			<p>The initial visualisation shows you the mood of tweets from all over the world, provided their Tweets were in English. The tweets are analyzed by sentiment and displayed on a map. The tweets disappear over time.</p>
+			<p>You can also see filtered tweets, based on trending topics around you. Your location is needed. If you don't want to give it, we use trending topics from the entire world.</p>
+			<button data-toggle="trends">Filter by trends</button>
+			<div class="loader hide">
+				<img src="/assets/images/puff.svg" alt="Loading data...">
+			</div>
+			<div class="filters hide">
+				<h2>Trending topics</h2>
+			</div>
 		</section>
 		<section class="map">
-			<input type="range" name="time" min="<%= (Date.now() - 8.64e+7) %>" max="<%= Date.now() %>" value=<%= Date.now() %>" step="900000">
 			<div></div>
 		</section>
 	</main>

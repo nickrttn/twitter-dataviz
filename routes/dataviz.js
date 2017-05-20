@@ -1,9 +1,10 @@
 const debug = require('debug')('dataviz');
+const qs = require('querystring');
 const express = require('express');
 const retext = require('retext');
 const sentiment = require('retext-sentiment');
-const scale = require('d3-scale').scaleLinear;
 
+const twitter = require('../lib/twitter');
 const emitter = require('../lib/stream');
 const user = require('../db/user');
 
@@ -12,6 +13,7 @@ const router = new express.Router();
 // Closure used for passing io to a router
 module.exports = io => {
 	let stream;
+	let filters = [];
 
 	io.on('connection', socket => {
 		socket.on('disconnect', () => {
@@ -122,12 +124,7 @@ module.exports = io => {
 			stream.on('data', ontweet);
 
 			function ontweet(tweet) {
-				if (tweet.coordinates && tweet.places) {
-					debug('both', tweet.coordinates, tweet.places);
-				}
-
 				if (tweet.coordinates) {
-					debug('user', tweet.coordinates);
 					tweetMood(tweet.text).then(mood => {
 						socket.emit('place', Object.assign({
 							sentiment: mood.data
@@ -136,7 +133,6 @@ module.exports = io => {
 				}
 
 				if (tweet.place) {
-					debug('place', tweet.place);
 					tweetMood(tweet.text).then(mood => {
 						socket.emit('place', Object.assign({
 							sentiment: mood.data
@@ -144,6 +140,27 @@ module.exports = io => {
 					});
 				}
 			}
+
+			socket.on('userLocation', loc => {
+				req.session.userLatLng = loc;
+				user.location(req)
+					.then(user => twitter.trendingClosest(user.value))
+					.then(trends => socket.emit('closestTrends', trends))
+					.catch(err => {
+						req.session.errors = err;
+						debug(err);
+					});
+			});
+
+			socket.on('filter', query => {
+				if (filters.indexOf(query) === -1) {
+					filters.push(query);
+				} else {
+					filters.splice(filters.indexOf(query), 1);
+				}
+
+				console.log(filters);
+			});
 		});
 	}
 

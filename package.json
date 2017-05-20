@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "start:dev": "DEBUG=server,dataviz,auth,user,db nodemon server.js",
+    "start:dev": "DEBUG=server,dataviz,auth,user,db,twitter nodemon server.js",
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
     "watch": "concurrently \"npm run browsersync\" \"npm run colors\" \"npm run map\" \"npm run css\"",
@@ -48,7 +48,6 @@
     "express": "^4.15.2",
     "express-session": "^1.15.2",
     "leaflet": "^1.0.3",
-    "leaflet-terminator": "^0.1.0",
     "redis": "^2.7.1",
     "retext": "^5.0.0",
     "retext-sentiment": "^4.0.0",
