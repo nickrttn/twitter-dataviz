@@ -8,12 +8,16 @@ const terminator = require('./terminator');
 (function () {
 	'use strict';
 	const socket = io('/map');
+	socket.open();
+
+	const filters = [];
 	const color = scale().domain([-5, 5]).range(['#dc322f', '#859900']);
 
 	// Instantiate the leaflet map
 	const map = L.map(document.querySelector('.map div'), {
 		center: [30, 0],
 		zoom: 2,
+		minZoom: 1,
 		worldCopyJump: true
 	});
 
@@ -33,39 +37,40 @@ const terminator = require('./terminator');
 
 	// Add an empty GeoJSON layer for tweets and set up styling
 	const tweets = L.geoJSON(null, {
-		pointToLayer: (geoJsonPoint, latlng) => L.circle(latlng, {radius: 10, fillOpacity: 1}),
+		pointToLayer: (geoJsonPoint, latlng) => {
+			const tweet = geoJsonPoint.properties.tweet;
+			const includesFilter = filters.reduce((acc, curr) => acc || tweet.includes(curr), false);
+			return L.circle(latlng, {
+				radius: 10,
+				opacity: filters.length ? (includesFilter ? 1 : 0.5) : 1,
+				fillOpacity: filters.length ? (includesFilter ? 0.5 : 1) : 1
+			});
+		},
 		style: geoJsonFeature => ({
 			color: color(geoJsonFeature.geometry.properties.sentiment.polarity)
 		})
 	}).addTo(map);
 
 	tweets.on('layeradd', () => {
-		tweets.eachLayer(layer => {
-			layer.setStyle({fillOpacity: layer.options.fillOpacity - 0.002});
-
-			if (layer.options.fillOpacity <= 0) {
-				layer.remove();
+		const layers = tweets.getLayers();
+		if (layers.length > 500) {
+			for (let i = layers.length - 1; layers.length === 500; i--) {
+				tweets.removeLayer(layers[i].getLayerId());
 			}
-		});
-	});
-
-	socket.on('place', loc => {
-		if (loc.place_type) {
-			addTweet(loc);
 		}
 	});
 
-	socket.on('location', loc => {
-		addTweet(loc);
-	});
+	socket.on('place', addTweet);
 
 	function addTweet(tweet) {
 		tweets.addData({
 			type: 'Point',
-			coordinates: d3Geo.geoCentroid(tweet.bounding_box),
+			coordinates: tweet.coordinates || d3Geo.geoCentroid(tweet.bounding_box),
 			properties: {
+				tweet: tweet.text,
 				timestamp: tweet.timestamp || Date.now(),
-				sentiment: tweet.sentiment
+				sentiment: tweet.sentiment,
+				hasFilter: tweet.hasFilter
 			}
 		});
 	}
@@ -108,7 +113,27 @@ const terminator = require('./terminator');
 
 		if (evt.target.dataset.query) {
 			socket.emit('filter', evt.target.dataset.query);
+			filterlayers(evt.target.dataset.query);
 		}
+	}
+
+	function filterlayers(query) {
+		const q = decodeURIComponent(query).replace(/\+/g, ' ');
+
+		if (filters.indexOf(q) === -1) {
+			filters.push(q);
+		} else {
+			filters.splice(filters.indexOf(q), 1);
+		}
+
+		tweets.eachLayer(layer => {
+			const tweet = layer.feature.geometry.properties.tweet;
+			const includesFilter = filters.reduce((acc, curr) => acc || tweet.includes(curr), false);
+			layer.setStyle({
+				opacity: filters.length ? (includesFilter ? 1 : 0.5) : 1,
+				fillOpacity: filters.length ? (includesFilter ? 1 : 0.5) : 1
+			});
+		});
 	}
 
 	document.querySelector('[data-toggle="trends"]').addEventListener('click', onfiltertoggle);
@@ -125,16 +150,33 @@ const terminator = require('./terminator');
 	function onPosSuccess(loc) {
 		const {latitude, longitude} = loc.coords;
 		socket.emit('userLocation', {latitude, longitude});
-		map.flyTo(L.latLng(latitude, longitude), 5);
+		map.flyTo(L.latLng(latitude, longitude), 3);
 	}
 
 	function onPosError(err) {
-		console.warn(err);
+		if (err.code === 1) {
+			socket.emit('userLocation', 'world');
+		}
 	}
 
 	function toggleLoader() {
 		document.querySelector('.loader').classList.toggle('hide');
 	}
 
-	socket.on('error', console.warn);
+	socket.on('connect', () => {
+		const activeFilters = [...document.querySelectorAll('.trends .selected')]
+			.map(filter => filter.dataset.query);
+		socket.emit('filters', activeFilters);
+	});
+
+	// Successful reconnect
+	socket.on('reconnect', () => {
+		document.querySelector('.notification').classList.add('hide');
+	});
+
+	socket.on('connect_error', () => {
+		document.querySelector('.notification').classList.remove('hide');
+	});
+
+	socket.on('connect_timeout', console.warn);
 })();

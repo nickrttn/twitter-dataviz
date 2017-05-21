@@ -41,7 +41,7 @@ h1, h2, h3 {
 	line-height: 1.2;
 }
 
-h1 {
+h1, h2 {
 	letter-spacing: 0.05em;
 }
 
@@ -173,7 +173,7 @@ button {
 }
 
 .explanation {
-	flex: 0 20vw;
+	flex: 0 25vw;
 	padding: 1em 2em;
 }
 
@@ -221,11 +221,13 @@ button {
 }
 
 .map {
-	flex: 0 80vw;
+	height: 100%;
+	flex: 0 75vw;
 	padding: 2em 2em 2em 0;
 }
 
 .map > div {
+	position: sticky;
 	height: 50vw;
 }
 
@@ -245,6 +247,52 @@ button {
 	justify-content: center;
 	width: 100%;
 	margin: 1em 0;
+}
+
+.legend {
+	display: flex;
+	flex-flow: column nowrap;
+	max-width: 20em;
+	margin-bottom: 2em;
+}
+
+.legend h4 {
+	margin-bottom: 0.5em;
+}
+
+.legend .labels {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+	margin-bottom: 0.25em;
+}
+
+.legend .labels span {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	letter-spacing: 0.01em;
+}
+
+.legend .scale {
+	background-image: linear-gradient(to right, var(--red), var(--green));
+	height: 1em;
+}
+
+.notification {
+	display: flex;
+	flex-flow: column nowrap;
+	background: var(--brwhite);
+	color: var(--brblack);
+	position: fixed;
+	top: 1em; right: 1em;
+	max-width: 20em;
+	z-index: 99999;
+	border-radius: 0.35em;
+	padding: 0.5em 0.75em;
+}
+
+.notification p {
+	margin: 0;
 }
 
 .hide {

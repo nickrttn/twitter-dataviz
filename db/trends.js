@@ -9,8 +9,7 @@ trends.save = (trends, user) => new Promise((resolve, reject) => {
 	connect.then(db => {
 		db.collection('trends')
 			.findOneAndUpdate({user_id: user._id}, {$set: {trends, timestamp: Date.now()}}, {upsert: true, returnNewDocument: true})
-			.then(doc => resolve(doc.value))
-			.catch(reject);
+			.then(doc => resolve(doc.value)).catch(reject);
 	});
 });
 
