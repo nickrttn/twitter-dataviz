@@ -14,8 +14,6 @@ user.save = session => new Promise((resolve, reject) => {
 		access_token_secret: session.oauthTokenSecret
 	});
 
-	console.log(session);
-
 	client.get('account/verify_credentials', {
 		include_entities: false,
 		skip_status: true,
@@ -25,8 +23,6 @@ user.save = session => new Promise((resolve, reject) => {
 			session.errors = res.errors;
 			reject(err);
 		}
-
-		console.log(err, res);
 
 		connect.then(db => {
 			db.collection('users')
