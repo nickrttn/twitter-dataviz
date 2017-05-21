@@ -39,7 +39,7 @@ const terminator = require('./terminator');
 		})
 	}).addTo(map);
 
-	tweets.on('layeradd', evt => {
+	tweets.on('layeradd', () => {
 		tweets.eachLayer(layer => {
 			layer.setStyle({fillOpacity: layer.options.fillOpacity - 0.002});
 
@@ -135,4 +135,6 @@ const terminator = require('./terminator');
 	function toggleLoader() {
 		document.querySelector('.loader').classList.toggle('hide');
 	}
+
+	socket.on('error', console.warn);
 })();

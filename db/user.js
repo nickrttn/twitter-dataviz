@@ -6,12 +6,12 @@ const connect = require('./connect');
 
 const user = {};
 
-user.save = req => new Promise((resolve, reject) => {
+user.save = session => new Promise((resolve, reject) => {
 	const client = new Twitter({
 		consumer_key: process.env.TV_TWITTER_APIKEY,
 		consumer_secret: process.env.TV_TWITTER_APISECRET,
-		access_token_key: req.session.oauthToken,
-		access_token_secret: req.session.oauthTokenSecret
+		access_token_key: session.oauthToken,
+		access_token_secret: session.oauthTokenSecret
 	});
 
 	client.get('account/verify_credentials', {
@@ -20,25 +20,25 @@ user.save = req => new Promise((resolve, reject) => {
 		include_email: false
 	}, (err, res) => {
 		if (err) {
-			req.session.errors = res.errors;
+			session.errors = res.errors;
 			reject(err);
 		}
 
 		connect.then(db => {
 			db.collection('users')
 				.findOneAndUpdate({_id: res.id}, {$set: Object.assign({
-					oauthToken: req.session.oauthToken,
-					oauthTokenSecret: req.session.oauthTokenSecret
+					oauthToken: session.oauthToken,
+					oauthTokenSecret: session.oauthTokenSecret
 				}, res)}, {upsert: true, returnOriginal: false})
 				.then(resolve).catch(reject);
 		});
 	});
 });
 
-user.location = req => new Promise((resolve, reject) => {
+user.location = session => new Promise((resolve, reject) => {
 	connect.then(db => {
 		db.collection('users')
-			.findOneAndUpdate({id_str: req.session.userId}, {$set: {latLng: req.session.userLatLng}}, {returnNewDocument: true})
+			.findOneAndUpdate({id_str: session.userId}, {$set: {latLng: session.userLatLng}}, {returnNewDocument: true})
 			.then(resolve).catch(reject);
 	});
 });
