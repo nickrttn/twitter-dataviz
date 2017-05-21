@@ -31,7 +31,7 @@ user.save = session => new Promise((resolve, reject) => {
 					oauthTokenSecret: session.oauthTokenSecret
 				}, res)}, {upsert: true, returnOriginal: false})
 				.then(resolve).catch(reject);
-		});
+		}).catch(reject);
 	});
 });
 

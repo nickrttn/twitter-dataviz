@@ -11,7 +11,7 @@ router.get('/', (req, res, next) => {
 		req.session.screenName = screenName;
 
 		next();
-	});
+	}).catch(console.log);
 });
 
 router.get('/', onindex);
