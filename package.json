@@ -13,9 +13,11 @@
     "colors": "watchify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
     "map": "watchify client/src/map.js -t babelify -o client/build/map.js",
     "css": "watch \"cleancss -o client/build/build.min.css client/src/main.css\" client/src",
+    "svg": "svgo -f client/src -o client/build",
     "build-colors": "browserify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
     "build-map": "browserify client/src/map.js -t babelify -g uglifyify -o client/build/map.js",
     "build-css": "cleancss -o client/build/build.min.css client/src/main.css",
+    "build-svg": "watch \"svgo -f client/src -o client/build\"",
     "deploy": "pm2 deploy production"
   },
   "repository": {
@@ -70,6 +72,7 @@
     "concurrently": "^3.4.0",
     "mongodb": "^2.2.26",
     "nodemon": "^1.11.0",
+    "svgo": "^0.7.2",
     "uglifyify": "^3.0.4",
     "watch": "^1.0.2",
     "watchify": "^3.9.0",
