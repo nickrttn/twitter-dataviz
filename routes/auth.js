@@ -24,7 +24,7 @@ function onsignin(req, res) {
 				req.session.requestTokenSecret = reqToken.oauth_token_secret;
 
 				const params = qs.stringify({oauth_token: reqToken.oauth_token}); // eslint-disable-line camelcase
-				return res.redirect(302, `https://api.twitter.com/oauth/authenticate?${params}`);
+				return res.redirect(302, `https://api.twitter.com/oauth/authorize?${params}`);
 			}
 		}
 

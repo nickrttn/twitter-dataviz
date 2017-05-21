@@ -1,3 +1,4 @@
+const debug = require('debug')('dataviz');
 const express = require('express');
 
 const user = require('../db/user');
@@ -5,13 +6,13 @@ const user = require('../db/user');
 const router = new express.Router();
 
 router.get('/', (req, res, next) => {
-	user.save(req).then(user => {
+	user.save(req.session).then(user => {
 		const {name, screen_name: screenName} = user.value;
 		req.session.name = name;
 		req.session.screenName = screenName;
 
 		next();
-	}).catch(console.log);
+	}).catch(debug);
 });
 
 router.get('/', onindex);
