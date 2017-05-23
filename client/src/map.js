@@ -12,6 +12,8 @@ const terminator = require('./terminator');
 
 	const filters = [];
 
+	document.querySelector('[data-toggle="trends"]').addEventListener('click', onfiltertoggle);
+
 	// Instantiate the leaflet map
 	const map = L.map(document.querySelector('.map div'), {
 		center: [30, 0],
@@ -63,6 +65,38 @@ const terminator = require('./terminator');
 
 	socket.on('place', addTweet);
 
+	socket.on('closestTrends', data => {
+		if (!document.querySelector('.loader').classList.contains('hide')) {
+			toggleLoader();
+		}
+
+		showTrends(data.trends);
+	});
+
+	socket.on('connect', () => {
+		const activeFilters = [...document.querySelectorAll('.trends .selected')]
+			.map(filter => filter.dataset.query);
+		socket.emit('filters', activeFilters);
+	});
+
+	// Successful reconnect
+	socket.on('reconnect', n => {
+		document.querySelector('.notification p').textContent = `You've reconnected after ${n} ${plur('try', n)} 🎉`;
+
+		setTimeout(() => {
+			document.querySelector('.notification').classList.add('hide');
+		}, 3000);
+	});
+
+	socket.on('connect_error', err => {
+		console.error(err);
+		document.querySelector('.notification').classList.remove('hide');
+	});
+
+	socket.on('reconnect_attempt', n => {
+		document.querySelector('.notification p').textContent = `You seem to be offline 😢 Reconnection attempt #${n}`;
+	});
+
 	function addTweet(tweet) {
 		tweets.addData({
 			type: 'Point',
@@ -75,14 +109,6 @@ const terminator = require('./terminator');
 			}
 		});
 	}
-
-	socket.on('closestTrends', data => {
-		if (!document.querySelector('.loader').classList.contains('hide')) {
-			toggleLoader();
-		}
-
-		showTrends(data.trends);
-	});
 
 	function showTrends(trends) {
 		const parent = document.querySelector('.filters');
@@ -137,8 +163,6 @@ const terminator = require('./terminator');
 		});
 	}
 
-	document.querySelector('[data-toggle="trends"]').addEventListener('click', onfiltertoggle);
-
 	function onfiltertoggle() {
 		this.classList.toggle('hide');
 		toggleLoader();
@@ -163,30 +187,4 @@ const terminator = require('./terminator');
 	function toggleLoader() {
 		document.querySelector('.loader').classList.toggle('hide');
 	}
-
-	socket.on('connect', () => {
-		const activeFilters = [...document.querySelectorAll('.trends .selected')]
-			.map(filter => filter.dataset.query);
-		socket.emit('filters', activeFilters);
-	});
-
-	// Successful reconnect
-	socket.on('reconnect', n => {
-		document.querySelector('.notification p').textContent = `You've reconnected after ${n} ${plur('try', n)} 🎉`;
-
-		setTimeout(() => {
-			document.querySelector('.notification').classList.add('hide');
-		}, 3000);
-	});
-
-	socket.on('connect_error', err => {
-		console.error(err);
-		document.querySelector('.notification').classList.remove('hide');
-	});
-
-	socket.on('reconnect_attempt', n => {
-		document.querySelector('.notification p').textContent = `You seem to be offline 😢 Reconnection attempt #${n}`;
-	});
-
-	socket.on('connect_timeout', console.warn);
 })();
