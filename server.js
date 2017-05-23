@@ -48,6 +48,7 @@ app.use('/assets', express.static(path.join(__dirname, 'client/build')));
 
 // Routes
 app.get('/', onindex);
+app.get('/sw.js', (req, res) => res.sendFile(path.join(__dirname, 'client/build/sw.js')));
 
 // Routers
 app.use('/auth', onauth);
