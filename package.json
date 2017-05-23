@@ -9,7 +9,7 @@
     "start:debug": "DEBUG=* nodemon server.js",
     "test": "xo",
     "watch": "concurrently \"npm run browsersync\" \"npm run sw\" \"npm run colors\" \"npm run map\" \"npm run css\"",
-    "browsersync": "browser-sync start --proxy \"localhost:3000\" --files \"client/build/*\" \"views/**/*.ejs\"",
+    "browsersync": "browser-sync start --proxy \"localhost:3000\" --port 3001 --files \"client/build/*\" \"views/**/*.ejs\"",
     "colors": "watchify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
     "map": "watchify client/src/map.js -t babelify -o client/build/map.js",
     "sw": "watchify client/src/sw.js -o client/build/sw.js",
