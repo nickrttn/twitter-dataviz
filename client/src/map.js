@@ -37,18 +37,19 @@ const terminator = require('./terminator');
 
 	// Add an empty GeoJSON layer for tweets and set up styling
 	const tweets = L.geoJSON(null, {
-		pointToLayer: (geoJsonPoint, latlng) => {
-			const tweet = geoJsonPoint.properties.tweet;
+		pointToLayer: (point, latlng) => {
+			const tweet = point.properties.tweet;
 			const includesFilter = filters.reduce((acc, curr) => acc || tweet.includes(curr), false);
 			return L.circle(latlng, {
 				radius: 10,
 				opacity: filters.length ? (includesFilter ? 1 : 0.5) : 1,
-				fillOpacity: filters.length ? (includesFilter ? 0.5 : 1) : 1
+				fillOpacity: filters.length ? (includesFilter ? 0.5 : 1) : 1,
+				color: color(point.properties.sentiment.polarity)
 			});
 		},
-		style: geoJsonFeature => ({
-			color: color(geoJsonFeature.geometry.properties.sentiment.polarity)
-		})
+		onEachFeature: (feature, layer) => {
+			layer.bindTooltip(feature.properties.tweet);
+		}
 	}).addTo(map);
 
 	tweets.on('layeradd', () => {
@@ -174,7 +175,8 @@ const terminator = require('./terminator');
 		document.querySelector('.notification').classList.add('hide');
 	});
 
-	socket.on('connect_error', () => {
+	socket.on('connect_error', err => {
+		console.error(err);
 		document.querySelector('.notification').classList.remove('hide');
 	});
 

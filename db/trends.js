@@ -6,9 +6,12 @@ const connect = require('./connect');
 const trends = {};
 
 trends.save = (trends, user) => new Promise((resolve, reject) => {
+	console.log(user);
 	connect.then(db => {
 		db.collection('trends')
-			.findOneAndUpdate({user_id: user._id}, {$set: {trends, timestamp: Date.now()}}, {upsert: true, returnNewDocument: true})
+			.findOneAndUpdate({user_id: user._id}, {
+				$set: {trends, timestamp: Date.now(), location: user.latLng}
+			}, {upsert: true, returnNewDocument: true})
 			.then(doc => resolve(doc.value)).catch(reject);
 	});
 });
