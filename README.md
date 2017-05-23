@@ -108,6 +108,24 @@ Leaflet is used to display the map.
 - [D3.js](https://github.com/d3/d3/wiki), a JavaScript library for visualizing data using web standards. Used for some geographic calculations and a color scale.
 - [socket.io](https://socket.io/), an engine for real-time communication.
 
+## Screenshots
+
+### Initial map view
+
+![](docs/initial.png)
+
+### Filters shown
+
+![](docs/filters.png)
+
+### Filter enabled
+
+![](docs/filter-enabled.png)
+
+### Colors
+
+![](docs/colors.png)
+
 ## License
 
 MIT © [Nick Rutten](https://twitter.com/nickrttn)
