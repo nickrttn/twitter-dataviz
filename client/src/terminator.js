@@ -27,7 +27,6 @@ L.Terminator = L.Polygon.extend({
 	},
 
 	initialize: function (options) {
-		console.log(this);
 		this.version = '0.1.0';
 		this._R2D = 180 / Math.PI;
 		this._D2R = Math.PI / 180;
