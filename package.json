@@ -14,12 +14,13 @@
     "map": "watchify client/src/map.js -t babelify -o client/build/map.js",
     "sw": "watchify client/src/sw.js -o client/build/sw.js",
     "css": "watch \"cleancss -o client/build/build.min.css client/src/main.css\" client/src",
-    "svg": "svgo -f client/src -o client/build",
+    "svg": "watch svgo -f client/src -o client/build",
+    "build": "npm run build-colors & npm run build-map & npm run build-sw & npm run build-css & npm run build-svg",
     "build-colors": "browserify client/src/colors.js -t babelify -g uglifyify -o client/build/colors.js",
     "build-map": "browserify client/src/map.js -t babelify -g uglifyify -o client/build/map.js",
     "build-sw": "browserify client/src/sw.js -o client/build/sw.js",
     "build-css": "cleancss -o client/build/build.min.css client/src/main.css",
-    "build-svg": "watch \"svgo -f client/src -o client/build\"",
+    "build-svg": "svgo -f client/src -o client/build",
     "deploy": "pm2 deploy production"
   },
   "repository": {
