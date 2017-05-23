@@ -1,18 +1,57 @@
-# Tweets in real-time
+# Twitter in real-time
 
-This application visualizes tweets as they come in. If a tweet includes a location or mentions a place, it is shown on a map. The application consumes the Twitter Streaming API. Twitter streams 1% of their 500 million tweets to the server as they come in. In an alternative visualization, the profile colors of every tweets' user are shown.
+The application visualizes tweets with locations on a map as they come in. Twitter streams 1% of their 500 million daily tweets to the application in real-time. The application allows the user to explore the sentiment of tweets across the globe, as well as closer to them, based on their location, provided the tweets are in English. Tweets can be filtered by trending topics, either based on location, or if a user doesn't like to share theirs, based on the most popular topics worldwide. This enables a user to more closely study sentiment for topics that might interest them.
+
+In an alternative visualization, the profile colors of every tweets' user are shown as a form of generative art.
+
+## Up and running
+
+### Prerequisites
+
+1. Install Node.js (https://nodejs.org/en/download/)
+2. Install Docker (https://www.docker.com/community-edition)
+3. Create a new application over on https://apps.twitter.com/. You will need the API key and secret later  
+For the “Callback URL” field, use `http://localhost:3000/auth/twitter/callback`.
+
+### Running locally
+
+1. Clone the project  
+`git clone https://github.com/nickrttn/twitter-dataviz.git && cd twitter-dataviz`
+2. Create an `.env` file and insert the Twitter API key and secrets, as well as a session secret.  
+`cp .env-example .env && subl .env` (replace `subl` with your favorite editor)
+2. Run the Docker containers  
+`docker-compose up -d`
+3. Install dependencies  
+`npm install`
+4. Build the client-side assets  
+`npm run build`
+5. Start the application  
+`npm run start`
+
+### Developing
+
+- Start the application with `npm run start:dev`
+- Run `npm run watch` while developing to automagically build your client-side assets
+
+### Deploying to a server
+
+The repository includes a sample `ecosystem.json` file for PM2. To use it, you would need a VPS with Node.js (v7+) installed, PM2 set up, Redis and MongoDB. You'll probably also want to set up SSH for easy deployment and better security. Send me a tweet at https://twitter.com/nickrttn or (create an issue)[https://github.com/nickrttn/twitter-dataviz/issues/new] and I'll point you in the right direction.
+
+Deploy by running `npm run deploy`.
 
 ## Features
 
-- oAuth 1.0 authentication
+- oAuth 1.0a authentication w/ Twitter
 - Pub/sub to the Twitter Streaming API using a NodeJS EventEmitter
-- Socket.io WebSockets or long polling, depending on the capabilities of the client
-- Data visualization using D3.js geo libraries
-- Error handling
+- Socket.io websockets or long polling, depending on the capabilities of the client
+- A map using Leaflet w/ maptiles from the Mapbox API
+- Generative art
+- Track Twitters' mood in real-time, on a map
+- Limited offline usage
 
 ## API documentation
 
-The web application exposes six endpoints.
+Express.js exposes six endpoints.
 
 - `/`
 - `/dataviz`
@@ -21,6 +60,12 @@ The web application exposes six endpoints.
 - `/auth/twitter/signin`
 - `/auth/twitter/callback`
 
+In addition to Express, socket.io exposes two namespaces.
+
+- `/map`
+- `/colors`
+
+## Future nice to haves
 
 
 ## Uses
