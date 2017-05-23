@@ -109,7 +109,7 @@ L.Terminator = L.Polygon.extend({
 	},
 
 	_compute: function (time) {
-		const today = time ? new Date() : new Date(time);
+		const today = time ? new Date(time) : new Date();
 
 		const julianDay = getJulian(today);
 		const gst = getGMST(today);
