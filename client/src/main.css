@@ -274,7 +274,7 @@ button {
 }
 
 .legend .scale {
-	background-image: linear-gradient(to right, var(--red), var(--green));
+	background-image: linear-gradient(to right, var(--magenta), var(--cyan));
 	height: 1em;
 }
 

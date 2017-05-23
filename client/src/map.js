@@ -2,16 +2,15 @@ const L = require('leaflet');
 const io = require('socket.io-client');
 const scale = require('d3-scale').scaleLinear;
 const d3Geo = require('d3-geo');
+const plur = require('plur');
 
 const terminator = require('./terminator');
 
 (function () {
 	'use strict';
 	const socket = io('/map');
-	socket.open();
 
 	const filters = [];
-	const color = scale().domain([-5, 5]).range(['#dc322f', '#859900']);
 
 	// Instantiate the leaflet map
 	const map = L.map(document.querySelector('.map div'), {
@@ -36,6 +35,7 @@ const terminator = require('./terminator');
 	}
 
 	// Add an empty GeoJSON layer for tweets and set up styling
+	const color = scale().domain([-5, 5]).range(['#d33682', '#2aa198']);
 	const tweets = L.geoJSON(null, {
 		pointToLayer: (point, latlng) => {
 			const tweet = point.properties.tweet;
@@ -131,8 +131,8 @@ const terminator = require('./terminator');
 			const tweet = layer.feature.geometry.properties.tweet;
 			const includesFilter = filters.reduce((acc, curr) => acc || tweet.includes(curr), false);
 			layer.setStyle({
-				opacity: filters.length ? (includesFilter ? 1 : 0.5) : 1,
-				fillOpacity: filters.length ? (includesFilter ? 1 : 0.5) : 1
+				opacity: filters.length ? (includesFilter ? 1 : 0.35) : 1,
+				fillOpacity: filters.length ? (includesFilter ? 1 : 0.35) : 1
 			});
 		});
 	}
@@ -171,13 +171,21 @@ const terminator = require('./terminator');
 	});
 
 	// Successful reconnect
-	socket.on('reconnect', () => {
-		document.querySelector('.notification').classList.add('hide');
+	socket.on('reconnect', n => {
+		document.querySelector('.notification p').textContent = `You've reconnected after ${n} ${plur('try', n)} 🎉`;
+
+		setTimeout(() => {
+			document.querySelector('.notification').classList.add('hide');
+		}, 3000);
 	});
 
 	socket.on('connect_error', err => {
 		console.error(err);
 		document.querySelector('.notification').classList.remove('hide');
+	});
+
+	socket.on('reconnect_attempt', n => {
+		document.querySelector('.notification p').textContent = `You seem to be offline 😢 Reconnection attempt #${n}`;
 	});
 
 	socket.on('connect_timeout', console.warn);
