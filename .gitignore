@@ -45,3 +45,6 @@ Thumbs.db
 
 # Build files
 client/build/*
+
+# Docker volumes
+volumes/
