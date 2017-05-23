@@ -16,26 +16,28 @@ In an alternative visualization, the profile colors of every tweets' user are sh
 
 ## Up and running
 
+Follow the instructions below to get the application up and running.
+
 ### Prerequisites
 
 1. Install Node.js (https://nodejs.org/en/download/)
 2. Install Docker (https://www.docker.com/community-edition)
-3. Create a new application over on https://apps.twitter.com/. You will need the API key and secret later  
+3. Create a new application over on https://apps.twitter.com/. You will need the API key and secret later
 For the “Callback URL” field, use `http://localhost:3000/auth/twitter/callback`.
 
 ### Running locally
 
-1. Clone the project  
+1. Clone the project
 `git clone https://github.com/nickrttn/twitter-dataviz.git && cd twitter-dataviz`
-2. Create an `.env` file and insert the Twitter API key and secrets, as well as a session secret.  
+2. Create an `.env` file and insert the Twitter API key and secrets, as well as a session secret.
 `cp .env-example .env && subl .env` (replace `subl` with your favorite editor)
-2. Run the Docker containers  
+2. Run the Docker containers
 `docker-compose up -d`
-3. Install dependencies  
+3. Install dependencies
 `npm install`
-4. Build the client-side assets  
+4. Build the client-side assets
 `npm run build`
-5. Start the application  
+5. Start the application
 `npm run start`
 
 ### Working on this application
@@ -53,14 +55,20 @@ Deploy by running `npm run deploy`.
 
 ## API documentation
 
-Express.js exposes six endpoints.
+Express.js exposes six HTTP endpoints.
 
-- `/`
-- `/dataviz`
-- `/dataviz/map`
-- `/dataviz/colors`
-- `/auth/twitter/signin`
-- `/auth/twitter/callback`
+- GET `/`
+The root of the web application, asking the user to sign in with Twitter.
+- GET `/dataviz`
+After signing in, a user is redirected here to pick a visualisation form.
+- GET `/dataviz/map`
+The interactive map with tweets streamed in real-time. Filterable by trending topics, colored by tweet sentiment.
+- GET `/dataviz/colors`
+Generative art, based on the profile colors of Twitter users
+- GET `/auth/twitter/signin`
+A route used by the Twitter oAuth service to authenticate the user.
+- GET `/auth/twitter/callback`
+A route used by the Twitter oAuth service to authenticate the user.
 
 In addition to Express, socket.io exposes two namespaces.
 
@@ -83,7 +91,7 @@ I'm open to contributors. If you'd like to contribute, you can fork the repo, ma
 
 I listed the most notable packages below. For more info, take a look in [package.json](package.json)
 
-- [Leaflet](http://leafletjs.com/) an open-source JavaScript library for mobile-friendly interactive maps.  
+- [Leaflet](http://leafletjs.com/) an open-source JavaScript library for mobile-friendly interactive maps.
 Leaflet is used to display the map.
 - [Leaflet.Terminator](https://github.com/joergdietrich/Leaflet.Terminator) a Leaflet plugin to show the solar terminator.
 - [D3.js](https://github.com/d3/d3/wiki), a JavaScript library for visualizing data using web standards. Used for some geographic calculations and a color scale.
