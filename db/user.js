@@ -38,8 +38,8 @@ user.save = session => new Promise((resolve, reject) => {
 user.location = session => new Promise((resolve, reject) => {
 	connect.then(db => {
 		db.collection('users')
-			.findOneAndUpdate({id_str: session.userId}, {$set: {latLng: session.userLatLng}}, {returnNewDocument: true})
-			.then(resolve).catch(reject);
+			.findOneAndUpdate({id_str: session.userId}, {$set: {latLng: session.userLatLng}}, {returnOriginal: false})
+			.then(doc => resolve(doc.value)).catch(reject);
 	});
 });
 

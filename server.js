@@ -24,9 +24,7 @@ const redisClient = process.env.TV_REDIS_PASSWORD ?
 	redis.createClient();
 
 const redisSession = session({
-	store: new RedisStore({
-		client: redisClient
-	}),
+	store: new RedisStore({client: redisClient}),
 	secret: process.env.TV_SESSION_SECRET,
 	resave: false,
 	saveUninitialized: false,
@@ -35,9 +33,7 @@ const redisSession = session({
 
 // Use express-session for app requests as well as sockets
 app.use(redisSession);
-io.use(sharedSession(redisSession, {
-	autoSave: true
-}));
+io.use(sharedSession(redisSession, {autoSave: true}));
 
 // Set up socket.io
 require('./lib/socket')(io, redisSession);
