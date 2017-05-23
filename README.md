@@ -4,6 +4,8 @@ The application visualizes tweets with locations on a map as they come in. Twitt
 
 In an alternative visualization, the profile colors of every tweets' user are shown as a form of generative art.
 
+A live demo of the application can be found at [twitterviz.unicornswithlaserguns.com](https://twitterviz.unicornswithlaserguns.com)
+
 ## Features
 
 - oAuth 1.0a authentication w/ Twitter
@@ -57,23 +59,32 @@ Deploy by running `npm run deploy`.
 
 Express.js exposes six HTTP endpoints.
 
-- GET `/`
+- `GET /`
 The root of the web application, asking the user to sign in with Twitter.
-- GET `/dataviz`
+- `GET /dataviz`
 After signing in, a user is redirected here to pick a visualisation form.
-- GET `/dataviz/map`
+- `GET /dataviz/map`
 The interactive map with tweets streamed in real-time. Filterable by trending topics, colored by tweet sentiment.
-- GET `/dataviz/colors`
+- `GET /dataviz/colors`
 Generative art, based on the profile colors of Twitter users
-- GET `/auth/twitter/signin`
+- `GET /auth/twitter/signin`
 A route used by the Twitter oAuth service to authenticate the user.
-- GET `/auth/twitter/callback`
+- `GET /auth/twitter/callback`
 A route used by the Twitter oAuth service to authenticate the user.
 
 In addition to Express, socket.io exposes two namespaces.
 
 - `/map`
+`/map` emits events to the client
+	- `place` a tweet with a location
+	- `closestTrends` a list of trends based on the users' location
+`/map` also listens for events from the client
+	- `userLocation` the geo-location of a user
+	- `filter` a user (de-)selects a filter
+	- `filters` sync the filters after a reconnect
 - `/colors`
+`/colors` emits event to the client
+	- `colors` an array of Twitter user profile colors
 
 ## Future nice to haves
 
