@@ -2,6 +2,7 @@ self.addEventListener('install', event => {
 	event.waitUntil(
 		caches.open('twitter-core-v1')
 			.then(cache => cache.addAll([
+				'/',
 				'/assets/colors.js',
 				'/assets/map.js',
 				'/assets/build.min.css',
