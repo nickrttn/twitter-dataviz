@@ -4,6 +4,16 @@ The application visualizes tweets with locations on a map as they come in. Twitt
 
 In an alternative visualization, the profile colors of every tweets' user are shown as a form of generative art.
 
+## Features
+
+- oAuth 1.0a authentication w/ Twitter
+- Pub/sub to the Twitter Streaming API using a NodeJS EventEmitter
+- Socket.io websockets or long polling, depending on the capabilities of the client
+- A map using Leaflet w/ maptiles from the Mapbox API
+- Generative art
+- Track Twitters' mood in real-time, on a map
+- Limited offline usage
+
 ## Up and running
 
 ### Prerequisites
@@ -28,26 +38,18 @@ For the “Callback URL” field, use `http://localhost:3000/auth/twitter/callba
 5. Start the application  
 `npm run start`
 
-### Developing
+### Working on this application
 
 - Start the application with `npm run start:dev`
 - Run `npm run watch` while developing to automagically build your client-side assets
 
-### Deploying to a server
+## Deployment
 
-The repository includes a sample `ecosystem.json` file for PM2. To use it, you would need a VPS with Node.js (v7+) installed, PM2 set up, Redis and MongoDB. You'll probably also want to set up SSH for easy deployment and better security. Send me a tweet at https://twitter.com/nickrttn or (create an issue)[https://github.com/nickrttn/twitter-dataviz/issues/new] and I'll point you in the right direction.
+The repository includes a sample `ecosystem.json` file for PM2. To use it, you would need a VPS with Node.js (v7+) installed, PM2 set up, Redis and MongoDB. You'll probably also want to set up SSH for easy deployment and better security. Send me a tweet at https://twitter.com/nickrttn or [create an issue](https://github.com/nickrttn/twitter-dataviz/issues/new) and I'll point you in the right direction.
+
+I deployed my instance of the application to a Digital Ocean box running Node.js, PM2 and Redis, with a remote MongoDB on the MongoDB Atlas cloud.
 
 Deploy by running `npm run deploy`.
-
-## Features
-
-- oAuth 1.0a authentication w/ Twitter
-- Pub/sub to the Twitter Streaming API using a NodeJS EventEmitter
-- Socket.io websockets or long polling, depending on the capabilities of the client
-- A map using Leaflet w/ maptiles from the Mapbox API
-- Generative art
-- Track Twitters' mood in real-time, on a map
-- Limited offline usage
 
 ## API documentation
 
@@ -67,14 +69,26 @@ In addition to Express, socket.io exposes two namespaces.
 
 ## Future nice to haves
 
+- Make it work better on mobile and/or touch devices
+- Visualise historic data (preferably without requiring gigantic amounts of database storage)
+- Improve the offline experience by caching tweets
+- Start a stream from an admin accessible page, so there's always one running
+- Use it with Twitters' Decahose
+
+## Contributing
+
+I'm open to contributors. If you'd like to contribute, you can fork the repo, make your changes, and do a pull request. If you need ideas what to improve, you could take a look at the [nice to haves](#nice-to-haves).
 
 ## Uses
 
-- World map data from [Natural Earth Data](www.naturalearthdata.com)
-- an orthographic map projection
-- http://samherbert.net/svg-loaders/
-- d3-geo
-- leaflet
-- leaflet.terminator
-- socket-io
+I listed the most notable packages below. For more info, take a look in [package.json](package.json)
 
+- [Leaflet](http://leafletjs.com/) an open-source JavaScript library for mobile-friendly interactive maps.  
+Leaflet is used to display the map.
+- [Leaflet.Terminator](https://github.com/joergdietrich/Leaflet.Terminator) a Leaflet plugin to show the solar terminator.
+- [D3.js](https://github.com/d3/d3/wiki), a JavaScript library for visualizing data using web standards. Used for some geographic calculations and a color scale.
+- [socket.io](https://socket.io/), an engine for real-time communication.
+
+## License
+
+MIT © [Nick Rutten](https://twitter.com/nickrttn)
