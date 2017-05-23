@@ -2,7 +2,6 @@ self.addEventListener('install', event => {
 	event.waitUntil(
 		caches.open('twitter-core-v1')
 			.then(cache => cache.addAll([
-				'/',
 				'/assets/colors.js',
 				'/assets/map.js',
 				'/assets/build.min.css',
@@ -18,13 +17,13 @@ self.addEventListener('fetch', event => {
 			fetch(event.request)
 				.then(response => toPageCache(event.request, response))
 				.catch(() => fromPageCache(event.request))
-				.catch(() => fromCoreCache('/offline'))
+				.catch(() => fromCoreCache(event.request))
 		);
 	} else {
 		event.respondWith(
 			fetch(event.request)
 				.catch(() => fromPageCache(event.request))
-				.catch(() => fromCoreCache('/offline'))
+				.catch(() => fromCoreCache(event.request))
 		);
 	}
 });
