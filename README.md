@@ -74,18 +74,15 @@ A route used by the Twitter oAuth service to authenticate the user.
 
 In addition to Express, socket.io exposes two namespaces.
 
-- `/map`  
-`/map` emits events to the client
-	- `place` a tweet with a location
-	- `closestTrends` a list of trends based on the users' location
-`/map` also listens for events from the client
-	- `userLocation` the geo-location of a user
-	- `filter` a user (de-)selects a filter
-	- `filters` sync the filters after a reconnect
+- `/map` emits and listens for events to/from a client on the `/dataviz/map` route
+	- `OUT place` a tweet with a location
+	- `OUT closestTrends` a list of trends based on the users' location
+	- `IN userLocation` the geo-location of a user
+	- `IN filter` a user (de-)selects a filter
+	- `IN filters` sync the filters after a reconnect
 
-- `/colors`
-`/colors` emits event to the client
-	- `colors` an array of Twitter user profile colors
+- `/colors` emits and listens for events to/from the client on the `/dataviz/colors` route
+	- `OUT colors` an array of Twitter user profile colors
 
 ## Future nice to haves
 
