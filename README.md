@@ -12,7 +12,7 @@ This application visualizes tweets as they come in. If a tweet includes a locati
 
 ## API documentation
 
-The web application exposes five endpoints.
+The web application exposes six endpoints.
 
 - `/`
 - `/dataviz`
@@ -30,5 +30,6 @@ The web application exposes five endpoints.
 - http://samherbert.net/svg-loaders/
 - d3-geo
 - leaflet
-- socket-io
 - leaflet.terminator
+- socket-io
+
