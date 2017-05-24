@@ -274,7 +274,7 @@ button {
 }
 
 .legend .scale {
-	background-image: linear-gradient(to right, var(--magenta), var(--cyan));
+	background-image: linear-gradient(to right, var(--red), var(--green));
 	height: 1em;
 }
 
@@ -297,4 +297,16 @@ button {
 
 .hide {
 	display: none;
+}
+
+.scale-in {
+	animation: 300ms ease-out 100ms scale 1;
+}
+
+@keyframes scale {
+	0% { transform: translate(0, -1em); }
+	25% { transform: translate(-0.75em, 0); }
+	50% { transform: translate(0, 0.5em); }
+	75% { transform: translate(0.25em, 0); }
+	100% { transform: translate(0, 0); }
 }

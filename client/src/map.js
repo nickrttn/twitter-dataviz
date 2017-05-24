@@ -37,7 +37,7 @@ const terminator = require('./terminator');
 	}
 
 	// Add an empty GeoJSON layer for tweets and set up styling
-	const color = scale().domain([-5, 5]).range(['#d33682', '#2aa198']);
+	const color = scale().domain([-5, 5]).range(['#dc322f', '#859900']);
 	const tweets = L.geoJSON(null, {
 		pointToLayer: (point, latlng) => {
 			const tweet = point.properties.tweet;
@@ -46,10 +46,12 @@ const terminator = require('./terminator');
 				radius: 10,
 				opacity: filters.length ? (includesFilter ? 1 : 0.5) : 1,
 				fillOpacity: filters.length ? (includesFilter ? 0.5 : 1) : 1,
-				color: color(point.properties.sentiment.polarity)
+				color: color(point.properties.sentiment.polarity),
+				className: 'scale-in'
 			});
 		},
 		onEachFeature: (feature, layer) => {
+			console.log(layer.getElement());
 			layer.bindTooltip(feature.properties.tweet);
 		}
 	}).addTo(map);
